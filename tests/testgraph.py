@@ -1,6 +1,7 @@
 #mjamesruggiero
 #2012-03-29 08:23:38
 #
+from context import Graph
 import unittest
 import sys, os
 import logging
