@@ -1,4 +1,4 @@
-tc
-==
+== Think Complexity ==
 
-Exercises from Allen Downey&#39;s *Think Complexity*
+* exercises from Allen Downey's *Think Complexity*
+* they are not organized by chapter, though I may do that later
