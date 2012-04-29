@@ -47,6 +47,20 @@ class TestRedBlackTree(unittest.TestCase):
         rbt.insert(10)
         self.assertTrue(rbt.get_root().value == 10)
 
+    def test_find_should_work_for_existing_value(self):
+        search_value = 9
+        rbt = RedBlackTree()
+        for x in [7, 11, 19, 10, search_value]:
+            rbt.insert(x) 
+        self.assertTrue(rbt.search(search_value))
+
+    def test_find_should_return_none_for_nonexistent_value(self):
+        search_value = 5
+        rbt = RedBlackTree()
+        for x in [7, 11, 19, 10]:
+            rbt.insert(x) 
+        self.assertTrue(rbt.search(search_value) is None)
+
 if __name__ == '__main__':
 
     logging.basicConfig(

@@ -5,7 +5,7 @@
 
 import string
 import logging
-
+import sys
 
 class LinearMap(object):
     """A simple implementation of a map using a list of tuples
@@ -78,7 +78,7 @@ class HashMap(object):
 
         logging.basicConfig(
             format="%(levelname)-10s %(asctime)s %(filename)s %(lineno)d %(message)s",
-            level=logging.DEBUG
+            level=logging.ERROR
         )
         self.log = logging.getLogger(sys.argv[0])
 

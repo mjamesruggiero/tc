@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import logging
+import pdb
 
 # with an obvious debt to
 # http://bit.ly/JEfBil
@@ -24,6 +25,17 @@ class RedBlackTree(object):
     def get_root(self):
         return self._tree
 
+    def search(self, needle):
+        if self._tree == None:
+            return None
+        else:
+            return self._tree.search(needle)
+
+    def search_by_key(self, needle):
+        if self._tree == None:
+            return None
+        else:
+            return self._tree.search_by_key(needle)
 
 class RedBlackTreeNode(object):
     def __init__(self, value):
@@ -210,7 +222,7 @@ class RedBlackTreeNode(object):
     def show(self, indent=0):
         for i in range(indent):
             print " ",
-            print "%s (%s)" % (self.value, self.get_color())
+        print "%s (%s)" % (self.value, self.get_color())
         if self.get_left() is None:
             for i in range(indent + 1):
                 print " ",
@@ -223,3 +235,28 @@ class RedBlackTreeNode(object):
             print "None(Black)"
         else:
             self.get_right().show(indent + 1)
+
+    def search(self, needle):
+        if self.value is None:
+            return None
+        else:
+            if self.value == needle:
+                return True
+            if self.value > needle and self.get_left():
+                return self.get_left().search(needle)
+            if self.value < needle and self.get_right():
+                return self.get_right().search(needle)
+        return None
+
+    def search_by_key(self, sought_key):
+        if self.value is None:
+            return None
+        else:
+            if self.value.key == sought_key:
+                return self.value.val
+            if self.value.key > sought_key and self.get_left():
+                return self.get_left().search_by_key(sought_key)
+            if self.value.key < sought_key and self.get_right():
+                return self.get_right().search_by_key(sought_key)
+        return None
+
