@@ -4,7 +4,14 @@
 # characteristics
 # Sun Apr 29 15:23:23 PDT 2012
 import os
+import sys
 import matplotlib.pyplot as pyplot
+from bettermap import LinearMap, BetterMap, HashMap
+import random
+import string
+import logging
+from time import localtime
+
 
 def etime():
     """See how much user and system time
@@ -14,33 +21,44 @@ def etime():
     return user + sys
 
 
-def dumb_func(size):
-    some_list = []
+def test_map_class(map_class_name, size):
+    """Using a random string, but I might
+    get bitten by this. Maybe better to use an int?
+    I just want to create more varied
+    sorting concerns for the hash maps"""
+    module = __import__('bettermap')
+    class_ = getattr(module, map_class_name)
+    object_ = class_()
     for i in range(0, size):
-        some_list.append(i ** i)
+        key = random_string(8)
+        object_.add(key, 1)
+        ret = object_.get(key)
 
-    return some_list.sort(reverse=True)
 
-
-def test_etime(func, number):
+def test_etime(map_class_name, number):
     start = etime()
-    func(number)
+    test_map_class(map_class_name, number)
     end = etime()
     elapsed = end - start
     return elapsed
 
 
-def test_several_times(func, factor=10000):
-    """Run the function several times 
+def random_string(n=4):
+    choice = string.ascii_uppercase + string.digits
+    return ''.join(random.choice(choice) for x in range(n))
+
+
+def test_several_times(map_class_name, factor=10000):
+    """Run the map_class_nametion several times
     and count the elapsed time"""
-    func = eval(func)
     times = []
     results = []
+    string_size = 8
     for i in range(2, 25):
         number = factor * i
-        results.append(number)
-        elapsed = test_etime(func, number)
+        elapsed = test_etime(map_class_name, number)
         times.append(elapsed)
+        results.append(number)
     return results, times
 
 
@@ -52,7 +70,6 @@ def plot(ns, ts, label, color='blue', exp=1.0):
 
 def fit(ns, ts, exp=1.0, index=-1):
     """Fits a curve with the given exponent.
-
     Use the given index as a reference point, and scale all other
     points accordingly.
     """
@@ -62,15 +79,23 @@ def fit(ns, ts, exp=1.0, index=-1):
     tfit = []
     for n in ns:
         ratio = float(n) / nref
-        t = ratio**exp * tref
+        t = ratio ** exp * tref
         tfit.append(t)
 
     return tfit
 
+
+def save(root, exts=['pdf']):
+    for ext in exts:
+        filename = '%s.%s' % (root, ext)
+        print 'Writing', filename
+        pyplot.savefig(filename)
+
+
 def graphit():
-    funcs = ['dumb_func']
     exp = 1.0
     scale = 'log'
+
     pyplot.clf()
     pyplot.xscale(scale)
     pyplot.yscale(scale)
@@ -78,17 +103,25 @@ def graphit():
     pyplot.xlabel('n')
     pyplot.ylabel('run time (n)')
 
-    colors = ['darkslateblue']
-    for functest, color in zip(funcs, colors):
-        data = test_several_times(functest, 100)
-        plot(*data, label=functest, color=color, exp=exp)
+    classes = (('LinearMap', 1000,  'darkslateblue'),
+               ('BetterMap', 10000, 'darkgreen'),
+               ('HashMap',   10000, 'orangered'))
+
+    for class_name, factor, color  in classes:
+        data = test_several_times(class_name, factor)
+        plot(*data, label=class_name, color=color, exp=exp)
 
     pyplot.legend(loc=4)
-    pyplot.show()
+    stamp = '%4d-%02d-%02d-%02d-%02d-%02d' % localtime()[:6]
+    filename = "timemaps-%s" % stamp
+    save(filename)
 
 if __name__ == '__main__':
-    #factor = 1000
-    #results, times = test_several_times(dumb_func, factor)
-    #for result, time in zip(results, times):
-    #    print "%i: %i" % (result, time)
+    logging.basicConfig(
+        #filename ="/tmp/python.log",
+        format="%(levelname)-10s %(filename)s %(lineno)d %(message)s",
+        level=logging.DEBUG
+    )
+    log = logging.getLogger(sys.argv[0])
+
     graphit()

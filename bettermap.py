@@ -7,6 +7,7 @@ import string
 import logging
 import sys
 
+
 class LinearMap(object):
     """A simple implementation of a map using a list of tuples
     where each tuple is a key-value pair."""
@@ -31,6 +32,7 @@ class LinearMap(object):
         """docstring for iteritems"""
         for k, v in self.items:
             yield k, v
+
 
 class BetterMap(object):
     """A faster implementation of a map using a list of LinearMaps
@@ -62,7 +64,6 @@ class BetterMap(object):
         return len(self.maps)
 
 
-
 class HashMap(object):
     """An implementation of a hashtable using a BetterMap
     that grows so that the number of items never exceeds the number
@@ -77,7 +78,7 @@ class HashMap(object):
         self.num = 0
 
         logging.basicConfig(
-            format="%(levelname)-10s %(asctime)s %(filename)s %(lineno)d %(message)s",
+            format="%(levelname)-10s %(filename)s %(lineno)d %(message)s",
             level=logging.ERROR
         )
         self.log = logging.getLogger(sys.argv[0])
@@ -90,7 +91,6 @@ class HashMap(object):
     def add(self, k, v):
         """Resize the map if necessary and adds the new item."""
         if self.num == len(self.maps.maps):
-            self.log.info("adding %s; resizing because num is %d" % (v, self.num))
             self.resize()
 
         self.maps.add(k, v)
@@ -102,7 +102,6 @@ class HashMap(object):
 
         for m in self.maps.maps:
             for k, v in m.iteritems():
-                self.log.info("remapping value %s to key %d" % (v, k))
                 new_map.add(k, v)
 
         self.maps = new_map
