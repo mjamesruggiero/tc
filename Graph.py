@@ -110,9 +110,7 @@ class Graph(dict):
     def is_regular(self):
         """true if all vertices 
         have the same number of edges"""
-        edge_count = []
-        for d in self.itervalues():
-            edge_count.append(len(d.values()))
+        edge_count = [len(d.values()) for d in self.itervalues()]
         return len(set(edge_count)) <= 1
 
     def breadth_first_search(self, s):
