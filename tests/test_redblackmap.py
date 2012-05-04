@@ -1,12 +1,9 @@
 #mjamesruggiero
 #2012-04-28 09:41:01
 #
-#TODO : there usually is one
-#
 from context import redblackmap
 import unittest
 import sys, os
-import logging
 from ConfigParser import ConfigParser
 from redblackmap import RedblackMap, KeyVal
 
@@ -29,13 +26,11 @@ class TestTestRedblackMap(unittest.TestCase):
         self.assertTrue(kv_1 == kv_2)
 
     def test_you_can_set_and_get_string(self):
-        """docstring for test_you_can_set"""
         rbmap = RedblackMap()
         rbmap.add('funky', 'monkey')
         self.assertTrue(rbmap.get('funky') == 'monkey')
 
     def test_you_can_set_and_get_string(self):
-        """docstring for test_you_can_set"""
         rbmap = RedblackMap()
         test_pairs = (('George', 1943), ('Paul', 1942), ('John', 1940), ('Ringo', 1940))
         for pair in test_pairs:
@@ -45,10 +40,4 @@ class TestTestRedblackMap(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(
-        #filename ="/tmp/python.log",
-        format="%(levelname)-10s %(asctime)s %(filename)s %(lineno)d %(message)s",
-        level=logging.DEBUG
-    )
-    log = logging.getLogger(sys.argv[0])
     unittest.main()
