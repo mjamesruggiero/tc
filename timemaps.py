@@ -33,6 +33,7 @@ def test_map_class(map_class_name, size):
         key = random_string(8)
         object_.add(key, 1)
         ret = object_.get(key)
+        del(ret) # throw it away, we don't need it
 
 
 def test_etime(map_class_name, number):
@@ -53,7 +54,6 @@ def test_several_times(map_class_name, factor=10000):
     and count the elapsed time"""
     times = []
     results = []
-    string_size = 8
     for i in range(2, 25):
         number = factor * i
         elapsed = test_etime(map_class_name, number)

@@ -184,6 +184,15 @@ class TestGraph(unittest.TestCase):
         g.add_edge(Edge(d, a))
         self.assertTrue(g.is_connected())
 
+    def test_is_connected_sees_non_connected_graph(self):
+        a, b, c, d  = Vertex('a'), Vertex('b'), Vertex('c'), Vertex('d')
+        e = Vertex('e')
+        g = Graph([a, b, c, d, e]) 
+        g.add_edge(Edge(a, b))
+        g.add_edge(Edge(b, c))
+        g.add_edge(Edge(c, d))
+        g.add_edge(Edge(d, a))
+        self.assertFalse(g.is_connected())
 
 if __name__ == '__main__':
     unittest.main()

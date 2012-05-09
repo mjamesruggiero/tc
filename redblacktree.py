@@ -1,6 +1,4 @@
 #!/usr/bin/python
-import logging
-import pdb
 
 # with an obvious debt to
 # http://bit.ly/JEfBil
@@ -147,7 +145,6 @@ class RedBlackTreeNode(object):
                 return self.get_parent().pivot_left(True)
 
     def pivot_right(self, recolor):
-        left = self.get_left()
         right = self.get_right()
         parent = self.get_parent()
         grand = self.get_grandparent()
@@ -176,7 +173,6 @@ class RedBlackTreeNode(object):
 
     def pivot_left(self, recolor):
         left = self.get_left()
-        right = self.get_right()
         parent = self.get_parent()
         grand = self.get_grandparent()
 
@@ -260,3 +256,6 @@ class RedBlackTreeNode(object):
                 return self.get_right().search_by_key(sought_key)
         return None
 
+    def children(self):
+        """get the left and right children"""
+        return [c for c in [self.get_left(), self.get_right()] if c is not None]
