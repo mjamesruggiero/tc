@@ -97,7 +97,7 @@ class Graph(dict):
         vs = self.vertices()
         if degree >= len(vs):
             message = "cannot set regular edges when degree "
-            message += "%d is greater than or equal to %d edges" % (degree, len(vs))
+            message += "{0} is greater than or equal to {1} edges".format(degree, len(vs))
             raise ValueError, message
 
         if degree % 2: # or 'if odd'
@@ -175,7 +175,7 @@ class Vertex(object):
         self.label = label
 
     def __repr__(self):
-        return 'Vertex(%s)' % repr(self.label)
+        return 'Vertex({0})'.format(repr(self.label))
         
     __str__ = __repr__
 
@@ -194,7 +194,7 @@ class Edge(tuple):
         return tuple.__new__(cls, (e1, e2))
 
     def __repr__(self):
-        return 'Edge(%s, %s)' % (repr(self[0]), repr(self[1]))
+        return 'Edge({0} {1})'.format(repr(self[0]), repr(self[1]))
 
     __str__ = __repr__
 
