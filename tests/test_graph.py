@@ -43,8 +43,9 @@ class TestGraph(unittest.TestCase):
         self.assertEqual(self.g.edges(), expected)
 
     def test_vertices_should_return_vertices(self):
-        expected = [self.v, self.w]
-        self.assertEquals(self.g.vertices(), expected)
+        self.assertTrue(self.v in self.g.vertices() \
+                and self.w in self.g.vertices() \
+                and len(self.g.vertices()) == 2)
 
     def test_get_edge_returns_none_for_missing_edge(self):
         """look for an edge that isn't there"""
