@@ -3,12 +3,11 @@
 #
 from context import Graph
 import unittest
-import sys, os
+import sys
 import logging
 from Graph import Graph
 from Graph import Vertex
 from Graph import Edge
-import pprint
 
 class TestGraph(unittest.TestCase):
     """
