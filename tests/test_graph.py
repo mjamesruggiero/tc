@@ -101,14 +101,14 @@ class TestGraph(unittest.TestCase):
         empty_g.add_all_edges()
         self.assertTrue(len(empty_g.edges()) == 3)
 
-    def test_regular_edges_works_with_two_vertices(self):
+    def test_regular_edges_works_with_6_vertices(self):
         """to build .add_regular_edges,
         we'll need a way tp count a Vertex's 
         number of edges"""
-        vertices = [Vertex('a'), Vertex('b')]
+        vertices = [Vertex('x'), Vertex('y'), Vertex('z'), Vertex('a'), Vertex('b')]
         g = Graph(vertices, [])
         g.add_regular_edges()
-        self.assertTrue(len(g.edges()) == 1)
+        self.assertTrue(len(g.edges()) == 5)
         self.assertTrue(g.is_regular())
 
     def test_regular_edges_works_with_three_vertices(self):
@@ -157,7 +157,7 @@ class TestGraph(unittest.TestCase):
     def test_is_regular_should_return_true_for_regular(self):
         """Should return true when each node has the
         same number of edges"""
-        vertices = [Vertex('a'), Vertex('b')]
+        vertices = [Vertex('a'), Vertex('b'), Vertex('9')]
         g = Graph(vertices, [])
         g.add_regular_edges()
         self.assertTrue(g.is_regular())

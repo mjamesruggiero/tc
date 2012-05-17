@@ -45,8 +45,11 @@ class Graph(dict):
     def remove_edge(self, edge):
         """Take an edge and remove all references 
         from it in the graph"""
-        if self.get_edge(edge[0], edge[1]):
-            del self[edge[0]][edge[1]]
+        v, w = edge
+        del self[v][w]
+        del self[w][v]
+        #if self.get_edge(edge[0], edge[1]):
+        #    del self[edge[0]][edge[1]]
 
     def vertices(self):
         """Get a list of vertices in a graph,
@@ -82,24 +85,60 @@ class Graph(dict):
         by adding edges between all pairs
         of vertices"""
         vertices = self.keys()
-        offset = vertices[1:] + [vertices[0]]
 
-        for i in izip(vertices, offset):
-            self.add_edge(Edge(*i))
+        for i, v in enumerate(vertices):
+            for j, w in enumerate(vertices):
+                if j == i:
+                    break
+                self.add_edge(Edge(v, w))
 
-    def add_regular_edges(self, degree=None):
+    def add_regular_edges(self, degree=2):
         """Add regular edges to empty graph"""
-        if len(self.edges()) > 0:
-            message = "cannot set regular edges; "
-            message += "graph already contains %d edge(s)" % len(self.edges())
-            raise Exception, message
-        self.add_all_edges()
+        vs = self.vertices()
+        if degree >= len(vs):
+            message = "cannot set regular edges when degree "
+            message += "%d is greater than or equal to %d edges" % (degree, len(vs))
+            raise ValueError, message
+
+        if degree % 2: # or 'if odd'
+            if len(vs) % 2:
+                message = "cannot set regular edges; "
+                message += " degree is odd and graph has odd number of vertices"
+                raise ValueError, message
+            self.add_regular_edges_even(degree - 1)
+            self.add_regular_edges_odd()
+        else:
+            self.add_regular_edges_even(degree)
+
+    def add_regular_edges_even(self, degree):
+        """make regular graph with degree (degree)
+        (degree) must be even"""
+        vs = self.vertices()
+        double = vs * 2
+
+        for i,v in enumerate(vs):
+            for j in range(1, degree/2 + 1):
+                w = double[i + j]
+                self.add_edge(Edge(v, w))
+
+    def add_regular_edges_odd(self):
+        """Add extra edge 'across' the graph
+        to finish off a regular graph
+        with an odd degree. The number of vertices
+        must be even."""
+        vs = self.vertices()
+        n = len(vs)
+        double = vs * 2
+
+        for i in range(n/2):
+            v = double[i]
+            w = double[i + n/2]
+            self.add_edge(Edge(v, w))
 
     def choose_method(self, degree, vertices_num):
         """Pick the method of populating 
         regular edges"""
         if degree == 1 and vertices_num == 1:
-            #do nothing
             return False
         if degree == 1 and vertices_num > 1:
             return self.add_all_edges
